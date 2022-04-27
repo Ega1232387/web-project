@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<meta charset="UTF-8">
+
+<h2 align="center">Список Разделов</h2>
+{% if current_user.is_authenticated %}
+<p align="justify">
+    <a href="index" class="btn btn-secondary">Вернуться к Работам</a>
+{% endif %}
+{% for depart in departments %}
+<h3>Department # {{ depart.id }}</h3>
+<div class="table_container">
+    <table class="my_table">
+        <tr class="my_row">
+            <td class="title" width="400px" bgcolor="#dddddd">Название</td>
+            <td class="title" width="150px" bgcolor="#dddddd">Глава</td>
+            <td class="title" width="100px" bgcolor="#dddddd" align="center">Члены</td>
+            <td class="title" width="200px" bgcolor="#dddddd" align="center">Почта Раздела</td>
+        </tr>
+        <tr class="my_row">
+            <td class="ordinary" bgcolor="#eeeeff">{{ depart.title.capitalize() }}</td>
+            <td class="ordinary" bgcolor="#eeeeff">{{ names[depart.chief][0] }} {{ names[depart.chief][1] }}</td>
+            <td class="ordinary" bgcolor="#eeeeff" align="center">{{ depart.members }}</td>
+            <td class="ordinary" bgcolor="#eeeeff" align="center">{{ depart.email }}</td>
+        </tr>
+
+    </table>
+</div>
+<br>
+{% endfor %}
+
+{% endblock %}

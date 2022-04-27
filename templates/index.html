@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<meta charset="UTF-8">
+
+<h2 align="center">Список Работ</h2>
+{% if current_user.is_authenticated and current_user.department == 1 %}
+<p align="justify">
+    <a href="departments" class="btn btn-secondary">Смотреть Разделы</a>
+    <a href="addjob" class="btn btn-secondary">Добавить Работу</a>
+{% endif %}
+{% for job in jobs %}
+<h3>Action # {{ job.id }}</h3>
+<div class="table_container">
+    <table class="my_table">
+        <tr class="my_row">
+            <td class="title" width="400px" bgcolor="#dddddd">Название</td>
+            <td class="title" width="100px" bgcolor="#dddddd" align="center">Длительность</td>
+            <td class="title" width="100px" bgcolor="#dddddd" align="center">Раздел</td>
+            <td class="title" width="200px" bgcolor="#dddddd" align="center">Сложность</td>
+            <td class="title" width="100px" bgcolor="#dddddd" align="center">Завершено?</td>
+        </tr>
+        <tr class="my_row">
+            <td class="ordinary" bgcolor="#eeeeff">{{ job.job.capitalize() }}</td>
+            <td class="ordinary" bgcolor="#eeeeff" align="center">{{ job.work_size }}</td>
+            <td class="ordinary" bgcolor="#eeeeff" align="center">{{ departments[job.department]}}</td>
+            <td class="ordinary" bgcolor="#eeeeff" align="center">{{ job.category }}</td>
+            {% if job.is_finished %}
+            <td class="ordinary" bgcolor="#eeffee" align="center">Да</td>
+            {% else %}
+            <td class="ordinary" bgcolor="#ffeeff" align="center">Нет</td>
+            {% endif %}
+        </tr>
+
+    </table>
+</div>
+<br>
+{% if current_user.is_authenticated and current_user.id == job.team_leader or current_user.id == 1  %}
+<div>
+    <a href="/jobs/{{ job.id }}" class="btn btn-warning">Изменить Работу</a>
+    <a href="/job_delete/{{ job.id }}" class="btn btn-danger">Удалить Работу</a>
+    {% if current_user.is_authenticated and current_user.department == 1 or current_user.id == 1  %}
+    <a href="/download/{{ job.id }}" class="btn btn-warning">Скачать Оригинальный Файл</a>
+    {% if job.is_edited == 1  %}
+    <a href="/download2/{{ job.id }}" class="btn btn-warning">Скачать изменённый Файл</a>
+    {% endif %}
+    {% endif %}
+
+</div>
+{% endif %}
+{% endfor %}
+
+{% endblock %}
